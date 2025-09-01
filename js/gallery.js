@@ -63,36 +63,35 @@ const images = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
 const galleryContainer = document.querySelector('.gallery');
-const galleryMarkup = images
+const markup = images
   .map(
     ({ preview, original, description }) => `
-  <li class="gallery-item">
-    <a class="gallery-link" href="${original}">
-      <img
-        class="gallery-image"
-        src="${preview}"
-        data-source="${original}"
-        alt="${description}"
-      />
-    </a>
-  </li>`
+<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>`
   )
   .join('');
 
-galleryContainer.innerHTML = galleryMarkup;
-galleryContainer.addEventListener('click', onGalleryClick);
+galleryContainer.innerHTML = markup;
 
-function onGalleryClick(event) {
-  event.preventDefault(); 
+galleryContainer.addEventListener('click', event => {
+  event.preventDefault();
 
-  if (!event.target.classList.contains('gallery-image')) return;
-
-  const originalUrl = event.target.dataset.source;
+  const target = event.target;
+  if (!target.classList.contains('gallery-image')) return;
 
   const instance = basicLightbox.create(`
-    <img src="${originalUrl}">
+    <img src="${target.dataset.source}" alt="${target.alt}" width="800" height="600">
   `);
 
   instance.show();
-}
+});
